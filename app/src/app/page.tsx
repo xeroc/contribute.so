@@ -17,12 +17,9 @@ export default function Home() {
             Simplify monthly donations to GitHub repositories using Solana blockchain. Focus on stable coins like USDC
             for reliable, transparent contributions.
           </p>
-          <div className="bg-gray-800 rounded-lg p-4 font-mono text-sm text-left max-w-md mx-auto mb-8">
-            <div className="text-green-400">$ contribute --repo owner/repo --amount 10 --token USDC</div>
-          </div>
           <Link href="/setup">
             <Button size="lg" color="primary" className="font-semibold">
-              Start Contributing
+              Setup your Repository
             </Button>
           </Link>
         </div>
