@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.11.0",
     "@coral-xyz/anchor": "^0.31.0",
     "@solana/spl-token": "^0.4.14",
     "@solana/wallet-adapter-base": "0.9.27",
@@ -37,6 +38,7 @@
     "drizzle-orm": "^0.41.0",
     "kafkajs": "^2.2.4",
     "next": "^15.2.3",
+    "next-auth": "^4.24.11",
     "postgres": "^3.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

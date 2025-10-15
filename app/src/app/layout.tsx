@@ -3,8 +3,7 @@ import '~/styles/globals.css'
 import { type Metadata } from 'next'
 import { Geist } from 'next/font/google'
 
-import { TRPCReactProvider } from '~/trpc/react'
-import { WalletProviderComponent } from './_components/wallet-provider'
+import { Providers } from './_components/providers'
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -21,9 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <WalletProviderComponent>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </WalletProviderComponent>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
