@@ -33,9 +33,9 @@ export function Layout({ children }: LayoutProps) {
               <a href="#tributary" className="hover:text-blue-400 transition-colors">
                 Tributary
               </a>
-              <a href="/setup" className="hover:text-blue-400">
+              <Link href="/setup" className="hover:text-blue-400">
                 Get Started
-              </a>
+              </Link>
             </div>
           </div>
         </div>
