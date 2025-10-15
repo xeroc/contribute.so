@@ -18,7 +18,10 @@ export function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="font-mono text-xl font-bold hover:text-blue-400 transition-colors">
-              contribute.so
+              <div className="flex items-center gap-2">
+                <img src="/logo.svg" alt="Contribute.so" className="w-12 h-12" />
+                <span className="text-xl font-semibold">contribute.so</span>
+              </div>
             </Link>
             <div className="flex space-x-8 items-center">
               <a href="#features" className="hover:text-blue-400 transition-colors">
