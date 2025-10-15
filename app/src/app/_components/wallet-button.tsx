@@ -4,13 +4,23 @@ import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
-export function WalletButton() {
+interface WalletButtonProps {
+  onConnect?: (publicKey: string) => void
+}
+
+export function WalletButton({ onConnect }: WalletButtonProps = {}) {
   const { publicKey } = useWallet()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (publicKey && onConnect) {
+      onConnect(publicKey.toBase58())
+    }
+  }, [publicKey, onConnect])
 
   if (!mounted) {
     return (

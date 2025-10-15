@@ -62,3 +62,16 @@ export const verificationTokens = createTable(
     compoundKey: index('compound_key').on(vt.identifier, vt.token),
   }),
 )
+
+export const userSetups = createTable('user_setup', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  provider: text('provider').notNull(), // e.g., 'github'
+  repository: text('repository').notNull(), // e.g., 'owner/repo'
+  walletPublicKey: text('wallet_public_key').notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
+})
