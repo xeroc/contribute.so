@@ -7,6 +7,7 @@ import { Layout } from '~/app/_components/layout'
 import { getUserRepositories, saveUserSetup, getUserSetupsAction } from './actions'
 import { type GitHubRepo } from '~/utils/github'
 import { Button } from '@heroui/react'
+import Link from 'next/link'
 
 interface UserSetup {
   id: string
@@ -129,7 +130,6 @@ export default function Setup() {
                   <thead className="bg-gray-700">
                     <tr>
                       <th className="px-4 py-2 text-left">Repository</th>
-                      <th className="px-4 py-2 text-left">Provider</th>
                       <th className="px-4 py-2 text-left">Wallet</th>
                       <th className="px-4 py-2 text-left">Created</th>
                     </tr>
@@ -137,8 +137,9 @@ export default function Setup() {
                   <tbody>
                     {setups.map((setup) => (
                       <tr key={setup.id} className="border-t border-gray-600">
-                        <td className="px-4 py-2">{setup.repository}</td>
-                        <td className="px-4 py-2">{setup.provider}</td>
+                        <td className="px-4 py-2">
+                          <Link href={`/${setup.provider}/${setup.repository}`}>{setup.repository}</Link>
+                        </td>
                         <td className="px-4 py-2 font-mono text-sm">
                           {setup.walletPublicKey.slice(0, 8)}...{setup.walletPublicKey.slice(-8)}
                         </td>
