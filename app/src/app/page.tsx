@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { LatestPost } from '~/app/_components/post'
+import { WalletButton } from '~/app/_components/wallet-button'
 import { api, HydrateClient } from '~/trpc/server'
 
 export default async function Home() {
@@ -40,6 +41,8 @@ export default async function Home() {
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">{hello ? hello.greeting : 'Loading tRPC query...'}</p>
           </div>
+
+          <WalletButton />
 
           <LatestPost />
         </div>
