@@ -12,7 +12,10 @@ export function Auth() {
   if (session) {
     return (
       <div className="flex flex-col items-center gap-4">
-        <p className="text-xl">Hi {session.user?.email}!</p>
+        <p className="text-xl">Hi {session.user?.name}!</p>
+        <p>
+          You are associated with @{session.user.provider}/{session.user.username}
+        </p>
         <button onClick={() => signOut()} className="rounded-full bg-red-600 px-4 py-2 text-white hover:bg-red-700">
           Sign Out
         </button>

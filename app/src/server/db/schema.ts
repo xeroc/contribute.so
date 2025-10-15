@@ -40,6 +40,7 @@ export const accounts = createTable('account', {
   scope: text('scope'),
   id_token: text('id_token'),
   session_state: text('session_state'),
+  username: text('username'),
 })
 
 export const sessions = createTable('session', {

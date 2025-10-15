@@ -1,5 +1,6 @@
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { type DefaultSession, type NextAuthOptions } from 'next-auth'
+import { eq } from 'drizzle-orm'
 import GithubProvider from 'next-auth/providers/github'
 import TwitterProvider from 'next-auth/providers/twitter'
 
@@ -17,15 +18,16 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string
+      username: string
+      provider: string
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user']
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface Account {
+    username?: string
+  }
 }
 
 /**
@@ -35,13 +37,31 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: async ({ session, user }) => {
+      // Get the account to fetch username
+      const [account] = await db
+        .select({ username: accounts.username, provider: accounts.provider })
+        .from(accounts)
+        .where(eq(accounts.userId, user.id))
+        .limit(1)
+
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          username: account!.username,
+          provider: account!.provider,
+        },
+      }
+    },
+    signIn: async ({ user, account, profile }) => {
+      if (account?.provider === 'github' && profile && 'login' in profile) {
+        // Store the GitHub username in the account
+        account.username = profile.login as string
+      }
+      return true
+    },
   },
 
   adapter: DrizzleAdapter(db, {
