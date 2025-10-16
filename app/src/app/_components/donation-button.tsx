@@ -24,7 +24,7 @@ export function DonationButton({ walletPublicKey, repository }: SubscriptionSect
     <div>
       <h2 className="text-xl font-semibold mb-4">Support This Repository</h2>
       <SubscriptionButton
-        amount={new BN('10000000')} //  eslint-disable-line
+        amount={new BN('10000000')}
         token={new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU')} // USDC mint
         recipient={recipient}
         gateway={PAYMENT_GATEWAY_PUBLIC_KEY}

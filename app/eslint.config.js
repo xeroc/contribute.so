@@ -1,3 +1,4 @@
+// @ts-ignore -- no types for this module
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 // @ts-ignore -- no types for this plugin
@@ -24,6 +25,7 @@ export default tseslint.config(
     plugins: {
       '@next/next': nextPlugin,
     },
+    // @ts-ignore -- type mismatch for Next.js plugin rules
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs['core-web-vitals'].rules,

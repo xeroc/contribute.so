@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { db } from '~/server/db'
 import { userSetups, users } from '~/server/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { Layout } from '~/app/_components/layout'
 import { DonationButton } from '~/app/_components/donation-button'
 
@@ -29,7 +29,6 @@ export default async function RepositorySetupPage({ params }: PageProps) {
 
   // Query for the setup
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
   const setupQuery = db
     .select({
       id: userSetups.id,
@@ -42,9 +41,8 @@ export default async function RepositorySetupPage({ params }: PageProps) {
     })
     .from(userSetups)
     .leftJoin(users, eq(userSetups.userId, users.id))
-    .where(eq(userSetups.provider, provider))
-    .where(eq(userSetups.repository, fullRepository))
-    .limit(1) //  eslint-disable-line @typescript-eslint/no-unsafe-member-access
+    .where(and(eq(userSetups.provider, provider), eq(userSetups.repository, fullRepository)))
+    .limit(1)
 
   const setup = (await setupQuery) as SetupData[]
 
