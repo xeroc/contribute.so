@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
         },
       }
     },
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({ account, profile }) => {
       if (account?.provider === 'github' && profile && 'login' in profile) {
         // Store the GitHub username in the account
         account.username = profile.login as string

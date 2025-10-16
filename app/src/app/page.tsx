@@ -1,8 +1,6 @@
 'use client'
 
-import { Button } from '@heroui/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Layout } from '~/app/_components/layout'
 import CTAButton from './_components/cta-button'

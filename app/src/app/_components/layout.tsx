@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 interface LayoutProps {
@@ -19,7 +20,7 @@ export function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="font-mono text-xl font-bold hover:text-blue-400 transition-colors">
               <div className="flex items-center gap-2">
-                <img src="/logo.svg" alt="Contribute.so" className="w-12 h-12" />
+                <Image src="/logo.svg" alt="Contribute.so" className="w-12 h-12" />
                 <span className="text-xl font-semibold">contribute.so</span>
               </div>
             </Link>
