@@ -6,5 +6,5 @@ node_modules
 test-ledger
 .yarn
 
-*/lib
-*/dist
+**/lib/*js
+**/dist/*.js

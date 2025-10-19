@@ -5,8 +5,8 @@ import GithubProvider from 'next-auth/providers/github'
 import TwitterProvider from 'next-auth/providers/twitter'
 
 import { env } from '~/env'
-import { db } from '~/server/db'
-import { accounts, sessions, users, verificationTokens } from '~/server/db/schema'
+import { db } from '@contribute-so/lib/db'
+import { accounts, sessions, users, verificationTokens } from '@contribute-so/lib/db/schema'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

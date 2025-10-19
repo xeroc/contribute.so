@@ -20,7 +20,7 @@ export function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="font-mono text-xl font-bold hover:text-blue-400 transition-colors">
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="Contribute.so" className="w-12 h-12" />
+                <Image src="/logo.svg" alt="Contribute.so" className="w-12 h-12" width="16" height="16" />
                 <span className="text-xl font-semibold">contribute.so</span>
               </div>
             </Link>

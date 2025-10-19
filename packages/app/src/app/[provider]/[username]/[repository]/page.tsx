@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
-import { db } from '~/server/db'
-import { userSetups, users } from '~/server/db/schema'
+import { db } from '@contribute-so/lib/db'
+import { userSetups, users } from '@contribute-so/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { Layout } from '~/app/_components/layout'
 import { DonationButton } from '~/app/_components/donation-button'

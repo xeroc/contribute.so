@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
-import { db } from '~/server/db'
-import { userSetups } from '~/server/db/schema'
+import { db } from '@contribute-so/lib/db'
+import { userSetups } from '@contribute-so/lib/db/schema'
 
 export interface CreateUserSetupData {
   userId: string

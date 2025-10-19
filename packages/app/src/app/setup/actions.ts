@@ -2,8 +2,8 @@
 
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '~/server/auth'
-import { db } from '~/server/db'
-import { accounts } from '~/server/db/schema'
+import { db } from '@contribute-so/lib/db'
+import { accounts } from '@contribute-so/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { fetchUserRepositories } from '~/utils/github'
 import { createUserSetup, getUserSetups } from '~/utils/setup'

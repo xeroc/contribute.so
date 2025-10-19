@@ -5,6 +5,9 @@ import * as anchor from "@coral-xyz/anchor";
 import * as cron from "node-cron";
 import * as fs from "fs";
 import { RecurringPaymentsSDK } from "@tributary-so/sdk";
+import { db } from "@contribute-so/lib/db";
+import { userSetups } from "@contribute-so/lib/db/schema";
+import { env } from "@contribute-so/lib/env";
 
 interface SchedulerConfig {
   connectionUrl: string;
@@ -187,6 +190,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   if (!process.env.ANCHOR_WALLET) {
     console.error("Environment variable ANCHOR_WALLET required");
+    process.exit(1);
+  }
+  if (!process.env.DATABASE_URL) {
+    console.error("Environment variable DATABASE_URL required");
     process.exit(1);
   }
 
