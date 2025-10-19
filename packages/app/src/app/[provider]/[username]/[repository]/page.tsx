@@ -54,7 +54,7 @@ export default async function RepositorySetupPage({ params }: PageProps) {
 
   return (
     <Layout>
-      <div className="flex min-h-screen flex-col items-center justify-center pt-16">
+      <div className="flex h-full flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 max-w-2xl">
           <h1 className="text-3xl font-bold text-center">Repository Donation Setup</h1>
 

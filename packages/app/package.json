@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "lucide-react": "^0.546.0",
     "@contribute-so/lib": "workspace:*",
     "@auth/drizzle-adapter": "^1.11.0",
     "@coral-xyz/anchor": "^0.31.0",

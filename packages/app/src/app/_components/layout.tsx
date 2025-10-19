@@ -13,7 +13,7 @@ export function Layout({ children }: LayoutProps) {
   const isHome = pathname === '/'
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="bg-gray-900 text-white min-h-screen flex flex-col">
       {/* Navbar */}
       <nav className="fixed top-0 w-full bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,15 +25,15 @@ export function Layout({ children }: LayoutProps) {
               </div>
             </Link>
             <div className="flex space-x-8 items-center">
-              <a href="#features" className="hover:text-blue-400 transition-colors">
+              <Link href="/#features" className="hover:text-blue-400 transition-colors">
                 Features
-              </a>
-              <a href="#how-it-works" className="hover:text-blue-400 transition-colors">
+              </Link>
+              <Link href="/#how-it-works" className="hover:text-blue-400 transition-colors">
                 How it Works
-              </a>
-              <a href="#tributary" className="hover:text-blue-400 transition-colors">
+              </Link>
+              <Link href="/#tributary" className="hover:text-blue-400 transition-colors">
                 Tributary
-              </a>
+              </Link>
               <Link href="/setup" className="hover:text-blue-400">
                 Get Started
               </Link>
@@ -43,7 +43,7 @@ export function Layout({ children }: LayoutProps) {
       </nav>
 
       {/* Main Content */}
-      <main className={isHome ? '' : 'pt-16'}>{children}</main>
+      <main className={isHome ? 'flex-1' : 'flex-1 pt-16'}>{children}</main>
 
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-gray-700">
