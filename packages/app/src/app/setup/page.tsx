@@ -1,11 +1,10 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { Layout } from '~/app/_components/layout'
 import { getUserSetupsAction } from './githubactions'
 import { Button } from '@heroui/react'
-import Link from 'next/link'
 import { GithubSetup } from './github'
 import { TwitterSetup } from './twitter'
 import { SetupCompletion } from './setup-completion'
@@ -30,12 +29,30 @@ export default function Setup() {
   const [currentStep, setCurrentStep] = useState<SetupStep>('wallet')
   const [selectedProvider, setSelectedProvider] = useState<string>('')
   const [completedSetup, setCompletedSetup] = useState<{ provider: string; repository: string } | null>(null)
+  const [walletConfirmed, setWalletConfirmed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('walletConfirmed');
+      return stored ? JSON.parse(stored) : false;
+    }
+    return false;
+  });
 
   useEffect(() => {
     if (session?.user) {
       fetchSetups().catch(console.error)
     }
   }, [session])
+
+  useEffect(() => {
+    localStorage.setItem('walletConfirmed', JSON.stringify(walletConfirmed));
+  }, [walletConfirmed])
+
+  useEffect(() => {
+    if (currentStep === 'provider' && session?.user?.provider) {
+      setSelectedProvider(session.user.provider)
+      setCurrentStep(session.user.provider as SetupStep)
+    }
+  }, [currentStep, session])
 
   const fetchSetups = async () => {
     try {
@@ -47,12 +64,22 @@ export default function Setup() {
   }
 
   const handleWalletConnect = (publicKey: string) => {
-    setWalletPublicKey(publicKey)
-    setWalletConnected(true)
-    setCurrentStep('provider')
+    if (walletConfirmed) {
+      setWalletPublicKey(publicKey)
+      setWalletConnected(true)
+      setCurrentStep('provider')
+    }
+  }
+  const handleWalletConfirm = (publicKey: string) => {
+    handleWalletConnect(publicKey);
+    setWalletConfirmed(true);
   }
 
   const handleProviderSelect = (provider: string) => {
+    if (!session || session.user?.provider !== provider) {
+      signIn(provider).catch(console.error)
+      return
+    }
     setSelectedProvider(provider)
     setCurrentStep(provider as SetupStep)
   }
@@ -63,11 +90,26 @@ export default function Setup() {
     fetchSetups().catch(console.error) // Refresh setups
   }
 
+  const back = async (step: SetupStep) => {
+    console.log(step)
+    if (step == 'wallet') {
+      setWalletConnected(false);
+      setWalletConfirmed(false);
+    }
+    if (step == 'provider' || step == 'wallet') {
+      console.log("signout")
+      await signOut()
+      setCurrentStep(step)
+    }
+  }
+
   if (status === 'loading') {
     return (
       <Layout>
-        <div className="flex h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
         </div>
       </Layout>
     )
@@ -82,7 +124,7 @@ export default function Setup() {
             <div className="w-full bg-gray-800 rounded-lg p-8 text-center">
               <h2 className="text-xl font-semibold mb-4">Step 1: Connect Your Wallet</h2>
               <p className="text-gray-400 mb-6">Your wallet will receive donations and manage payment policies</p>
-              <WalletButton onConnect={handleWalletConnect} />
+              <WalletButton onConnect={handleWalletConnect} onConfirm={handleWalletConfirm} />
             </div>
           </div>
         </div>
@@ -96,6 +138,12 @@ export default function Setup() {
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
+            <button
+              className="text-gray-400 hover:text-gray-300 text-sm underline self-start"
+              onClick={() => back('wallet')}
+            >
+              ← Back
+            </button>
             <div className="text-center">
               <h1 className="text-3xl font-bold mb-4">Choose Your Platform</h1>
               <p className="text-gray-400 mb-8">Connect a GitHub repository or Twitter account for donations</p>
@@ -149,7 +197,13 @@ export default function Setup() {
     return (
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
-          <div className="container px-4 py-16">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
+            <button
+              className="text-gray-400 hover:text-gray-300 text-sm underline self-start mb-4"
+              onClick={() => back('provider')}
+            >
+              ← Back
+            </button>
             <GithubSetup
               walletPublicKey={walletPublicKey}
               onComplete={(repository) => handleSetupComplete('github', repository)}
@@ -165,7 +219,13 @@ export default function Setup() {
     return (
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
-          <div className="container px-4 py-16">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
+            <button
+              className="text-gray-400 hover:text-gray-300 text-sm underline self-start mb-4"
+              onClick={() => back('provider')}
+            >
+              ← Back
+            </button>
             <TwitterSetup
               walletPublicKey={walletPublicKey}
               onComplete={(username) => handleSetupComplete('twitter', username)}
@@ -181,7 +241,13 @@ export default function Setup() {
     return (
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
-          <div className="container px-4 py-16">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
+            <button
+              className="text-gray-400 hover:text-gray-300 text-sm underline self-start mb-4"
+              onClick={() => back('provider')}
+            >
+              ← Back
+            </button>
             <SetupCompletion
               provider={completedSetup.provider}
               repository={completedSetup.repository}
@@ -192,53 +258,3 @@ export default function Setup() {
       </Layout>
     )
   }
-
-  // Existing setups view (fallback)
-  return (
-    <Layout>
-      <div className="flex h-full flex-col items-center justify-center">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-4xl">
-          <h1 className="text-3xl font-bold">Your Donation Setups</h1>
-
-          {setups.length > 0 ? (
-            <div className="w-full">
-              <div className="overflow-x-auto">
-                <table className="w-full bg-gray-800 rounded-lg overflow-hidden">
-                  <thead className="bg-gray-700">
-                    <tr>
-                      <th className="px-4 py-2 text-left">Provider</th>
-                      <th className="px-4 py-2 text-left">Repository/Account</th>
-                      <th className="px-4 py-2 text-left">Wallet</th>
-                      <th className="px-4 py-2 text-left">Created</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {setups.map((setup) => (
-                      <tr key={setup.id} className="border-t border-gray-600">
-                        <td className="px-4 py-2 capitalize">{setup.provider}</td>
-                        <td className="px-4 py-2">
-                          <Link href={`/${setup.provider}/${setup.repository}`}>{setup.repository}</Link>
-                        </td>
-                        <td className="px-4 py-2 font-mono text-sm">
-                          {setup.walletPublicKey.slice(0, 8)}...{setup.walletPublicKey.slice(-8)}
-                        </td>
-                        <td className="px-4 py-2">
-                          {setup.createdAt ? new Date(setup.createdAt).toLocaleDateString() : 'N/A'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ) : (
-            <div className="text-center">
-              <p className="text-gray-400 mb-4">No setups found</p>
-              <Button onClick={() => setCurrentStep('provider')}>Create New Setup</Button>
-            </div>
-          )}
-        </div>
-      </div>
-    </Layout>
-  )
-}

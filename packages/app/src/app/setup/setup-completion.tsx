@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
+import { Snippet, Button } from '@heroui/react'
 import { DonationButton } from '~/app/_components/donation-button'
-import { Button } from '@heroui/react'
 import Link from 'next/link'
 
 interface SetupCompletionProps {
@@ -11,6 +12,17 @@ interface SetupCompletionProps {
 }
 
 export function SetupCompletion({ provider, repository, walletPublicKey }: SetupCompletionProps) {
+  const [copied, setCopied] = useState(false)
+  const url = window.location.origin.includes('localhost')
+    ? `http://localhost:3000/${provider}/${repository}`
+    : `https://contribute.so/${provider}/${repository}`
+
+  const handleCopy = async () => {
+    const markdown = `[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)](${url})`
+    await navigator.clipboard.writeText(markdown)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8">
       <div className="text-center">
@@ -32,7 +44,15 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
         </div>
         <div className="flex items-center justify-between">
           <span className="text-gray-300">{provider === 'github' ? 'Repository:' : 'Username:'}</span>
-          <span className="font-medium">{repository}</span>
+          <span className="font-medium flex items-center gap-2">
+            {repository}
+            <Link
+              href={provider === 'github' ? `https://github.com/${repository}` : `https://x.com/${repository}`}
+              className="text-blue-500 hover:text-blue-400"
+            >
+              🔗
+            </Link>
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-gray-300">Wallet:</span>
@@ -48,13 +68,26 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
         </div>
       )}
 
-      <div className="flex gap-4">
-        <Button as={Link} href="/" variant="bordered" className="flex-1">
-          Go Home
-        </Button>
-        <Button as={Link} href={`/${provider}/${repository}`} className="flex-1 bg-blue-600 hover:bg-blue-700">
-          View {provider === 'github' ? 'Repository' : 'Profile'}
-        </Button>
+      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
+        <h3 className="text-lg font-semibold">Share Your Donation Link</h3>
+        <p className="text-gray-400">Use this badge to display your donation link:</p>
+        <div className="p-4 rounded-lg flex justify-center">
+          <Link href={url}>
+            <img
+              src={`https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue`}
+              alt="Contribute.so/{provider}/{repository}"
+            />
+          </Link>
+        </div>
+        <div>
+          <p className="text-sm text-gray-300 mb-2">Markdown snippet:</p>
+          <Snippet color="primary" variant="bordered" symbol="" className="w-full overflow-x-auto">
+            <pre>[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)]({url})</pre>
+          </Snippet>
+          <Button onClick={handleCopy} size="sm" className="w-full mt-2">
+            {copied ? '✅ Copied!' : '📋 Copy markdown'}
+          </Button>
+        </div>
       </div>
     </div>
   )

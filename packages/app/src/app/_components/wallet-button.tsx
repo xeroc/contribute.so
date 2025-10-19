@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { Button } from '@heroui/react'
 
 interface WalletButtonProps {
   onConnect?: (publicKey: string) => void
+  onConfirm?: (publicKey: string) => void
 }
 
-export function WalletButton({ onConnect }: WalletButtonProps = {}) {
+export function WalletButton({ onConnect, onConfirm }: WalletButtonProps = {}) {
   const { publicKey } = useWallet()
   const [mounted, setMounted] = useState(false)
 
@@ -36,9 +38,17 @@ export function WalletButton({ onConnect }: WalletButtonProps = {}) {
     <div className="flex flex-col items-center gap-4">
       <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-700 !text-white !font-bold !py-2 !px-4 !rounded" />
       {publicKey && (
-        <p className="text-sm text-gray-300">
-          Connected: {publicKey.toBase58().slice(0, 8)}...{publicKey.toBase58().slice(-8)}
-        </p>
+        <div className="mt-6">
+          {onConfirm && (
+            <Button
+              onClick={() => onConfirm(publicKey.toString())}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600"
+              size="lg"
+            >
+              Next Step
+            </Button>
+          )}
+        </div>
       )}
     </div>
   )

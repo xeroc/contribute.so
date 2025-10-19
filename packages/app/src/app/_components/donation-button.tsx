@@ -3,21 +3,22 @@
 import { SubscriptionButton, PaymentInterval } from '@tributary-so/sdk-react'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@coral-xyz/anchor'
+import { env } from '~/env'
 
 interface SubscriptionSectionProps {
   walletPublicKey: string
   repository: string
 }
 
-const PAYMENT_GATEWAY_PUBLIC_KEY = new PublicKey('AWqqH2c5zKhBUKrme1D28uQooS54HvAeS1ix8nfQ4bEt')
-
 export function DonationButton({ walletPublicKey, repository }: SubscriptionSectionProps) {
   let recipient: PublicKey
+  let gateway: PublicKey
   try {
     recipient = new PublicKey(walletPublicKey)
+    gateway = new PublicKey(env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY)
   } catch {
-    console.error('Invalid wallet public key:', walletPublicKey)
-    return <div>Invalid wallet configuration</div>
+    console.error('Invalid wallet or gateway public key')
+    return <div>Invalid configuration</div>
   }
 
   return (
@@ -27,7 +28,7 @@ export function DonationButton({ walletPublicKey, repository }: SubscriptionSect
         amount={new BN('10000000')}
         token={new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU')} // USDC mint
         recipient={recipient}
-        gateway={PAYMENT_GATEWAY_PUBLIC_KEY}
+        gateway={gateway}
         interval={PaymentInterval.Weekly}
         maxRenewals={12}
         memo={`Monthly donation to ${repository}`}

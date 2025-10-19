@@ -1,18 +1,40 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@heroui/react'
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import { saveUserSetup } from './githubactions'
 
 interface TwitterSetupProps {
   walletPublicKey: string
-  onComplete: () => void
+  onComplete: (username: string) => void
 }
 
 export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps) {
+  const { data: session } = useSession()
   const [username, setUsername] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>('')
+
+  useEffect(() => {
+    console.log(session)
+    if (session?.user?.username) {
+      const cleanUsername = session.user.username.replace('@', '')
+      setUsername(cleanUsername)
+      handleAutoSetup(cleanUsername)
+    }
+  }, [session])
+
+  const handleAutoSetup = async (cleanUsername: string) => {
+    try {
+      setLoading(true)
+      await saveUserSetup(cleanUsername, walletPublicKey, 'twitter')
+      onComplete(cleanUsername)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save setup')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSaveSetup = async () => {
     if (!username.trim()) {
@@ -26,7 +48,7 @@ export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps)
     try {
       setLoading(true)
       await saveUserSetup(cleanUsername, walletPublicKey, 'twitter')
-      onComplete()
+      onComplete(cleanUsername)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save setup')
     } finally {
@@ -38,42 +60,25 @@ export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps)
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold mb-2">Connect Twitter Account</h2>
-        <p className="text-gray-400">Enter your Twitter username to enable donations</p>
+        <p className="text-gray-400">Connecting your Twitter account...</p>
       </div>
 
-      {error && (
-        <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">
-          {error}
+      {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">{error}</div>}
+
+      {loading ? (
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <span className="ml-2">Setting up...</span>
+        </div>
+      ) : username ? (
+        <div className="text-center p-8 bg-green-900/20 border border-green-500 rounded-lg">
+          <p className="text-green-200">Connected as @{username}</p>
+        </div>
+      ) : (
+        <div className="text-center p-8 bg-gray-800 rounded-lg">
+          <p className="text-gray-400">Loading Twitter account...</p>
         </div>
       )}
-
-      <div className="space-y-4">
-        <label className="block text-sm font-medium text-gray-300">
-          Twitter Username
-        </label>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">@</span>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="yourusername"
-            className="w-full pl-8 pr-3 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        <p className="text-sm text-gray-500">
-          Enter your Twitter username without the @ symbol
-        </p>
-      </div>
-
-      <Button
-        onClick={handleSaveSetup}
-        disabled={!username.trim() || loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600"
-        size="lg"
-      >
-        {loading ? 'Setting up...' : 'Complete Twitter Setup'}
-      </Button>
     </div>
   )
 }

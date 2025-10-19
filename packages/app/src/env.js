@@ -23,7 +23,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY: z.string(),
   },
 
   /**
@@ -39,7 +39,7 @@ export const env = createEnv({
     TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

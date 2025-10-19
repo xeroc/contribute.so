@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -11,6 +12,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
@@ -20,11 +22,12 @@ export function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="font-mono text-xl font-bold hover:text-blue-400 transition-colors">
               <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="Contribute.so" className="w-12 h-12" width="16" height="16" />
-                <span className="text-xl font-semibold">contribute.so</span>
+                <Image src="/logo.svg" alt="Contribute.so" className="w-8 h-8 md:w-12 md:h-12" width="16" height="16" />
+                <span className="text-lg md:text-xl font-semibold">contribute.so</span>
               </div>
             </Link>
-            <div className="flex space-x-8 items-center">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex space-x-8 items-center">
               <Link href="/#features" className="hover:text-blue-400 transition-colors">
                 Features
               </Link>
@@ -38,7 +41,57 @@ export function Layout({ children }: LayoutProps) {
                 Get Started
               </Link>
             </div>
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-300 hover:text-white focus:outline-none focus:text-white"
+              >
+                <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                  {isMenuOpen ? (
+                    <path fillRule="evenodd" clipRule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 0 1 1.414 1.414l-4.828 4.829 4.828 4.828z" />
+                  ) : (
+                    <path fillRule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800 border-t border-gray-700">
+                <Link
+                  href="/#features"
+                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Features
+                </Link>
+                <Link
+                  href="/#how-it-works"
+                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  How it Works
+                </Link>
+                <Link
+                  href="/#tributary"
+                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tributary
+                </Link>
+                <Link
+                  href="/setup"
+                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 

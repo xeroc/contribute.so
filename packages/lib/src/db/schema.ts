@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 // import { sql } from 'drizzle-orm'
-import { index, pgTableCreator, text, timestamp, integer } from 'drizzle-orm/pg-core'
+import { index, unique, pgTableCreator, text, timestamp, integer } from 'drizzle-orm/pg-core'
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -74,4 +74,6 @@ export const userSetups = createTable('user_setup', {
   repository: text('repository').notNull(), // e.g., 'owner/repo'
   walletPublicKey: text('wallet_public_key').notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
-})
+}, (us) => ({
+  uniqueUserProviderRepo: unique('unique_user_provider_repo').on(us.userId, us.provider, us.repository),
+}))

@@ -25,7 +25,7 @@ export async function getUserRepositories() {
   return await fetchUserRepositories(account[0].access_token)
 }
 
-export async function saveUserSetup(repository: string, walletPublicKey: string, provider: string = 'github') {
+export async function saveUserSetup(repository: string, walletPublicKey: string, provider = 'github') {
   const session = await getServerSession(authOptions)
 
   if (!session?.user?.id) {

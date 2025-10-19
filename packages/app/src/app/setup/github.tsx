@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@heroui/react'
+import { Select, SelectItem, Button } from '@heroui/react'
 import { getUserRepositories, saveUserSetup } from './githubactions'
 import { type GitHubRepo } from '~/utils/github'
+import { GitFolder } from '../icons'
 
 interface GithubSetupProps {
   walletPublicKey: string
-  onComplete: () => void
+  onComplete: (repository: string) => void
 }
 
 export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
@@ -16,8 +17,10 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>('')
 
+  const iconClasses = 'text-xl text-default-500 pointer-events-none shrink-0'
+
   useEffect(() => {
-    fetchRepositories()
+    fetchRepositories().catch(console.error)
   }, [])
 
   const fetchRepositories = async () => {
@@ -41,7 +44,7 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
     try {
       setLoading(true)
       await saveUserSetup(selectedRepo, walletPublicKey)
-      onComplete()
+      onComplete(selectedRepo)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save setup')
     } finally {
@@ -56,40 +59,36 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
         <p className="text-gray-400">Select a repository to enable donations</p>
       </div>
 
-      {error && (
-        <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">
-          {error}
-        </div>
-      )}
+      {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">{error}</div>}
 
       <div className="space-y-4">
-        <label className="block text-sm font-medium text-gray-300">
-          Choose Repository
-        </label>
+        <label className="block text-sm font-medium text-gray-300">Choose Repository</label>
         {loading ? (
           <div className="flex items-center justify-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span className="ml-2">Loading repositories...</span>
+            <span className="ml-2 text-red-600">Loading repositories...</span>
           </div>
         ) : repositories.length > 0 ? (
-          <select
-            value={selectedRepo}
-            onChange={(e) => setSelectedRepo(e.target.value)}
-            className="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          <Select
+            placeholder="Select a repository..."
+            selectedKeys={selectedRepo ? [selectedRepo] : []}
+            onSelectionChange={(keys) => setSelectedRepo(Array.from(keys)[0] as string)}
+            className="w-full"
           >
-            <option value="">Select a repository...</option>
             {repositories.map((repo) => (
-              <option key={repo.id} value={repo.full_name}>
+              <SelectItem
+                key={repo.full_name}
+                description={repo.description ?? 'No description'}
+                startContent={<GitFolder className={iconClasses} />}
+              >
                 {repo.full_name}
-              </option>
+              </SelectItem>
             ))}
-          </select>
+          </Select>
         ) : (
           <div className="text-center p-8 bg-gray-800 rounded-lg">
             <p className="text-gray-400">No public repositories found</p>
-            <p className="text-sm text-gray-500 mt-2">
-              Make sure your GitHub account has public repositories
-            </p>
+            <p className="text-sm text-gray-500 mt-2">Make sure your GitHub account has public repositories</p>
           </div>
         )}
       </div>

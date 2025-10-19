@@ -60,6 +60,9 @@ export const authOptions: NextAuthOptions = {
         // Store the GitHub username in the account
         account.username = profile.login as string
       }
+      if (account?.provider === 'twitter' && account.access_token) {
+        account.username = (profile as unknown).data.username as string
+      }
       return true
     },
   },
