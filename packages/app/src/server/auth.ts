@@ -61,7 +61,8 @@ export const authOptions: NextAuthOptions = {
         account.username = profile.login as string
       }
       if (account?.provider === 'twitter' && account.access_token) {
-        account.username = (profile as unknown).data.username as string
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        account.username = (profile as any).data.username as string
       }
       return true
     },

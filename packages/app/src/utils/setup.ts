@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm'
 import { db } from '@contribute-so/lib/db'
 import { userSetups } from '@contribute-so/lib/db/schema'
-import { sql } from 'drizzle-orm'
 
 export interface CreateUserSetupData {
   userId: string
@@ -11,10 +10,12 @@ export interface CreateUserSetupData {
 }
 
 export async function createUserSetup(data: CreateUserSetupData) {
-  return await db.insert(userSetups).values(data)
+  return await db
+    .insert(userSetups)
+    .values(data)
     .onConflictDoUpdate({
       target: [userSetups.userId, userSetups.provider, userSetups.repository],
-      set: { walletPublicKey: data.walletPublicKey }
+      set: { walletPublicKey: data.walletPublicKey },
     })
     .returning()
 }

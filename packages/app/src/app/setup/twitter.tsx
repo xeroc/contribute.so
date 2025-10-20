@@ -20,31 +20,11 @@ export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps)
     if (session?.user?.username) {
       const cleanUsername = session.user.username.replace('@', '')
       setUsername(cleanUsername)
-      handleAutoSetup(cleanUsername)
+      handleAutoSetup(cleanUsername).catch(console.error)
     }
   }, [session])
 
   const handleAutoSetup = async (cleanUsername: string) => {
-    try {
-      setLoading(true)
-      await saveUserSetup(cleanUsername, walletPublicKey, 'twitter')
-      onComplete(cleanUsername)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save setup')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSaveSetup = async () => {
-    if (!username.trim()) {
-      setError('Please enter your Twitter username')
-      return
-    }
-
-    // Remove @ if present
-    const cleanUsername = username.replace('@', '')
-
     try {
       setLoading(true)
       await saveUserSetup(cleanUsername, walletPublicKey, 'twitter')

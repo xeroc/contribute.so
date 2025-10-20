@@ -31,11 +31,11 @@ export default function Setup() {
   const [completedSetup, setCompletedSetup] = useState<{ provider: string; repository: string } | null>(null)
   const [walletConfirmed, setWalletConfirmed] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('walletConfirmed');
-      return stored ? JSON.parse(stored) : false;
+      const stored = localStorage.getItem('walletConfirmed')
+      return stored ? !!JSON.parse(stored) : false
     }
-    return false;
-  });
+    return false
+  })
 
   useEffect(() => {
     if (session?.user) {
@@ -44,7 +44,7 @@ export default function Setup() {
   }, [session])
 
   useEffect(() => {
-    localStorage.setItem('walletConfirmed', JSON.stringify(walletConfirmed));
+    localStorage.setItem('walletConfirmed', JSON.stringify(walletConfirmed))
   }, [walletConfirmed])
 
   useEffect(() => {
@@ -71,8 +71,8 @@ export default function Setup() {
     }
   }
   const handleWalletConfirm = (publicKey: string) => {
-    handleWalletConnect(publicKey);
-    setWalletConfirmed(true);
+    handleWalletConnect(publicKey)
+    setWalletConfirmed(true)
   }
 
   const handleProviderSelect = (provider: string) => {
@@ -93,11 +93,11 @@ export default function Setup() {
   const back = async (step: SetupStep) => {
     console.log(step)
     if (step == 'wallet') {
-      setWalletConnected(false);
-      setWalletConfirmed(false);
+      setWalletConnected(false)
+      setWalletConfirmed(false)
     }
     if (step == 'provider' || step == 'wallet') {
-      console.log("signout")
+      console.log('signout')
       await signOut()
       setCurrentStep(step)
     }
@@ -108,8 +108,8 @@ export default function Setup() {
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-        </div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
         </div>
       </Layout>
     )
@@ -258,3 +258,4 @@ export default function Setup() {
       </Layout>
     )
   }
+}
