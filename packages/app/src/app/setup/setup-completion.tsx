@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Snippet, Button } from '@heroui/react'
 import { DonationButton } from '~/app/_components/donation-button'
 import Link from 'next/link'
+import confetti from 'canvas-confetti'
 
 interface SetupCompletionProps {
   provider: string
@@ -17,6 +18,8 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
     ? `http://localhost:3000/${provider}/${repository}`
     : `https://contribute.so/${provider}/${repository}`
   const imgUrl = `https://img.shields.io/badge/%F0%9F%A4%91 contribute.so-${repository}-blue`
+
+  confetti()
 
   const handleCopy = async () => {
     const markdown = `[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)](${url})`
