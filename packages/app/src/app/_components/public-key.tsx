@@ -23,6 +23,7 @@ export function PublicKeyComponent({ publicKey, className = '' }: PublicKeyProps
       setTimeout(() => {
         setCopying(false)
       }, 2000)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_err) {
       addToast({
         title: 'Error',
@@ -36,7 +37,7 @@ export function PublicKeyComponent({ publicKey, className = '' }: PublicKeyProps
     <span className={`inline-flex items-center gap-1 ${className}`}>
       {copying ? (
         <span className="text-xs sm:text-sm text-success flex items-center gap-1.5">
-           <Check size={16} className="text-success" />
+          <Check size={16} className="text-success" />
           Copied!
         </span>
       ) : (

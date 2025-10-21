@@ -23,10 +23,12 @@ type SetupStep = 'wallet' | 'provider' | 'github' | 'twitter' | 'complete'
 
 export default function Setup() {
   const { data: session, status } = useSession()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [setups, setSetups] = useState<UserSetup[]>([])
   const [walletConnected, setWalletConnected] = useState(false)
   const [walletPublicKey, setWalletPublicKey] = useState<string>('')
   const [currentStep, setCurrentStep] = useState<SetupStep>('wallet')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedProvider, setSelectedProvider] = useState<string>('')
   const [completedSetup, setCompletedSetup] = useState<{ provider: string; repository: string } | null>(null)
   const [walletConfirmed, setWalletConfirmed] = useState(() => {
@@ -121,9 +123,9 @@ export default function Setup() {
       <Layout>
         <div className="flex h-full flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 max-w-2xl">
-             <div className="w-full bg-content1 rounded-lg p-8 text-center">
-               <h2 className="text-xl font-semibold mb-4">Step 1: Connect Your Wallet</h2>
-               <p className="text-default-600 mb-6">Your wallet will receive donations and manage payment policies</p>
+            <div className="w-full bg-content1 rounded-lg p-8 text-center">
+              <h2 className="text-xl font-semibold mb-4">Step 1: Connect Your Wallet</h2>
+              <p className="text-default-600 mb-6">Your wallet will receive donations and manage payment policies</p>
               <WalletButton onConnect={handleWalletConnect} onConfirm={handleWalletConfirm} />
             </div>
           </div>
@@ -145,8 +147,8 @@ export default function Setup() {
               ← Back
             </button>
             <div className="text-center">
-               <h1 className="text-3xl font-bold mb-4">Choose Your Platform</h1>
-               <p className="text-default-600 mb-8">Connect a GitHub repository or Twitter account for donations</p>
+              <h1 className="text-3xl font-bold mb-4">Choose Your Platform</h1>
+              <p className="text-default-600 mb-8">Connect a GitHub repository or Twitter account for donations</p>
             </div>
 
             <div className="w-full space-y-4">
@@ -163,7 +165,7 @@ export default function Setup() {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold">GitHub Repository</h3>
-                     <p className="text-sm text-default-600">Enable donations for your open source projects</p>
+                    <p className="text-sm text-default-600">Enable donations for your open source projects</p>
                   </div>
                 </div>
               </Button>
@@ -181,7 +183,7 @@ export default function Setup() {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold">Twitter Account</h3>
-                     <p className="text-sm text-default-600">Receive donations from your Twitter followers</p>
+                    <p className="text-sm text-default-600">Receive donations from your Twitter followers</p>
                   </div>
                 </div>
               </Button>

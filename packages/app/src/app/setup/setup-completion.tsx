@@ -19,7 +19,7 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
     : `https://contribute.so/${provider}/${repository}`
   const imgUrl = `https://img.shields.io/badge/%F0%9F%A4%91 contribute.so-${repository}-blue`
 
-  confetti()
+  confetti()?.catch(console.log)
 
   const handleCopy = async () => {
     const markdown = `[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)](${url})`
