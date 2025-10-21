@@ -93,12 +93,7 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
         )}
       </div>
 
-      <Button
-        onClick={handleSaveSetup}
-        disabled={!selectedRepo || loading}
-        className="w-full bg-primary hover:bg-primary-600 disabled:bg-default-400"
-        size="lg"
-      >
+      <Button onClick={handleSaveSetup} disabled={!selectedRepo || loading} className="w-full" size="lg">
         {loading ? 'Setting up...' : 'Complete GitHub Setup'}
       </Button>
     </div>

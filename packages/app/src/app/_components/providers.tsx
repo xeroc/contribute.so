@@ -8,7 +8,7 @@ import { ToastProvider } from '@heroui/toast'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <HeroUIProvider theme="light">
+    <HeroUIProvider>
       <SessionProvider>
         <WalletProviderComponent>
           <TRPCReactProvider>

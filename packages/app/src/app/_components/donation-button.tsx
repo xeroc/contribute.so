@@ -37,7 +37,7 @@ export function DonationButton({ walletPublicKey, repository }: SubscriptionSect
         size="lg"
         executeImmediately={true}
         // className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent font-bold text-xl px-6 py-3 rounded-lg font-semibold border-1"
-        className="bg-primary-500 hover:bg-primary-600 text-foreground px-6 py-3 rounded-lg font-semibold"
+        className="px-6 py-3 font-semibold bg-gradient-to-r from-[#9945FF] to-[#14F195] border-0 font-bold text-xl px-6 py-3 text-black"
         onSuccess={(tx) => console.log('Donation successful:', tx)}
         onError={(err) => console.error('Donation failed:', err)}
       />
