@@ -5,6 +5,7 @@ import { Snippet, Button } from '@heroui/react'
 import { DonationButton } from '~/app/_components/donation-button'
 import Link from 'next/link'
 import confetti from 'canvas-confetti'
+import SubscriptionInfo, { type SetupData } from '../_components/SubscriptionInfo'
 
 interface SetupCompletionProps {
   provider: string
@@ -20,6 +21,14 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
   const imgUrl = `https://img.shields.io/badge/%F0%9F%A4%91 contribute.so-${repository}-blue`
 
   confetti()?.catch(console.log)
+  const setupData: SetupData = {
+    provider,
+    repository,
+    fullRepository: repository,
+    walletPublicKey: walletPublicKey,
+    createdAt: null,
+    userName: null,
+  }
 
   const handleCopy = async () => {
     const markdown = `[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)](${url})`
@@ -28,7 +37,7 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
     setTimeout(() => setCopied(false), 2000)
   }
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8">
+    <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center">
         <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,30 +49,7 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
           Your {provider === 'github' ? 'repository' : 'account'} is now connected for donations.
         </p>
 
-        <div className="bg-content1 rounded-lg p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-default-700">Provider:</span>
-            <span className="font-medium capitalize">{provider}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-default-700">{provider === 'github' ? 'Repository:' : 'Username:'}</span>
-            <span className="font-medium flex items-center gap-2">
-              {repository}
-              <Link
-                href={provider === 'github' ? `https://github.com/${repository}` : `https://x.com/${repository}`}
-                className="text-blue-500 hover:text-blue-400"
-              >
-                🔗
-              </Link>
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-default-700">Wallet:</span>
-            <span className="font-mono text-sm">
-              {walletPublicKey.slice(0, 8)}...{walletPublicKey.slice(-8)}
-            </span>
-          </div>
-        </div>
+        <SubscriptionInfo setupData={setupData} />
 
         {provider === 'github' && (
           <div className="bg-primary/20 border border-primary rounded-lg p-6">
