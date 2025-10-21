@@ -16,6 +16,7 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
   const url = window.location.origin.includes('localhost')
     ? `http://localhost:3000/${provider}/${repository}`
     : `https://contribute.so/${provider}/${repository}`
+  const imgUrl = `https://img.shields.io/badge/%F0%9F%A4%91 contribute.so-${repository}-blue`
 
   const handleCopy = async () => {
     const markdown = `[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)](${url})`
@@ -26,67 +27,74 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8">
       <div className="text-center">
-        <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <h2 className="text-2xl font-bold mb-2">Setup Complete!</h2>
-        <p className="text-gray-400">
+        <p className="text-default-600">
           Your {provider === 'github' ? 'repository' : 'account'} is now connected for donations.
         </p>
-      </div>
 
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-300">Provider:</span>
-          <span className="font-medium capitalize">{provider}</span>
+        <div className="bg-content1 rounded-lg p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-default-700">Provider:</span>
+            <span className="font-medium capitalize">{provider}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-default-700">{provider === 'github' ? 'Repository:' : 'Username:'}</span>
+            <span className="font-medium flex items-center gap-2">
+              {repository}
+              <Link
+                href={provider === 'github' ? `https://github.com/${repository}` : `https://x.com/${repository}`}
+                className="text-blue-500 hover:text-blue-400"
+              >
+                🔗
+              </Link>
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-default-700">Wallet:</span>
+            <span className="font-mono text-sm">
+              {walletPublicKey.slice(0, 8)}...{walletPublicKey.slice(-8)}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-gray-300">{provider === 'github' ? 'Repository:' : 'Username:'}</span>
-          <span className="font-medium flex items-center gap-2">
-            {repository}
-            <Link
-              href={provider === 'github' ? `https://github.com/${repository}` : `https://x.com/${repository}`}
-              className="text-blue-500 hover:text-blue-400"
-            >
-              🔗
+
+        {provider === 'github' && (
+          <div className="bg-primary/20 border border-primary rounded-lg p-6">
+            <DonationButton walletPublicKey={walletPublicKey} repository={repository} />
+          </div>
+        )}
+
+        <div className="bg-content1 rounded-lg p-6 space-y-4">
+          <h3 className="text-lg font-semibold">Share Your Donation Link</h3>
+          <p className="text-default-600">Use this badge to display your donation link:</p>
+          <div className="p-4 rounded-lg flex justify-center">
+            <Link href={url}>
+              <img src={imgUrl} alt="Contribute.so/{provider}/{repository}" />
             </Link>
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-gray-300">Wallet:</span>
-          <span className="font-mono text-sm">
-            {walletPublicKey.slice(0, 8)}...{walletPublicKey.slice(-8)}
-          </span>
-        </div>
-      </div>
-
-      {provider === 'github' && (
-        <div className="bg-blue-900/20 border border-blue-500 rounded-lg p-6">
-          <DonationButton walletPublicKey={walletPublicKey} repository={repository} />
-        </div>
-      )}
-
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Share Your Donation Link</h3>
-        <p className="text-gray-400">Use this badge to display your donation link:</p>
-        <div className="p-4 rounded-lg flex justify-center">
-          <Link href={url}>
-            <img
-              src={`https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue`}
-              alt="Contribute.so/{provider}/{repository}"
-            />
-          </Link>
-        </div>
-        <div>
-          <p className="text-sm text-gray-300 mb-2">Markdown snippet:</p>
-          <Snippet color="primary" variant="bordered" symbol="" className="w-full overflow-x-auto">
-            <pre>[![🤑](https://img.shields.io/badge/%F0%9F%A4%91-contribute-blue)]({url})</pre>
-          </Snippet>
-          <Button onClick={handleCopy} size="sm" className="w-full mt-2">
-            {copied ? '✅ Copied!' : '📋 Copy markdown'}
-          </Button>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Markdown snippet:</h3>
+            <Snippet
+              variant="bordered"
+              symbol=""
+              className="w-full"
+              classNames={{
+                base: 'w-full',
+                pre: 'w-full overflow-x-auto whitespace-pre-wrap break-all',
+              }}
+            >
+              <p className="break-all text-left">
+                [![🤑]({imgUrl})]({url})
+              </p>
+            </Snippet>
+            <Button onClick={handleCopy} size="sm" className="w-full mt-2">
+              {copied ? '✅ Copied!' : '📋 Copy markdown'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

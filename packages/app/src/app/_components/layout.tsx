@@ -15,29 +15,31 @@ export function Layout({ children }: LayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div className="bg-background text-foreground min-h-screen flex flex-col">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-gray-800/90 backdrop-blur-sm border-b border-gray-700 z-10">
+      <nav className="fixed top-0 w-full bg-content1/90 backdrop-blur-sm border-b border-default-300 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="font-mono text-xl font-bold hover:text-blue-400 transition-colors">
+            <Link href="/" className="font-mono text-xl font-bold hover:text-primary transition-colors">
               <div className="flex items-center gap-2">
                 <Image src="/logo.svg" alt="Contribute.so" className="w-8 h-8 md:w-12 md:h-12" width="16" height="16" />
-                <span className="text-lg md:text-xl font-semibold">contribute.so</span>
+                <span className="text-lg md:text-xl bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent font-bold">
+                  contribute.so
+                </span>
               </div>
             </Link>
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 items-center">
-              <Link href="/#features" className="hover:text-blue-400 transition-colors">
+              <Link href="/#features" className="hover:text-primary transition-colors">
                 Features
               </Link>
-              <Link href="/#how-it-works" className="hover:text-blue-400 transition-colors">
+              <Link href="/#how-it-works" className="hover:text-primary transition-colors">
                 How it Works
               </Link>
-              <Link href="/#tributary" className="hover:text-blue-400 transition-colors">
+              <Link href="/#tributary" className="hover:text-primary transition-colors">
                 Tributary
               </Link>
-              <Link href="/setup" className="hover:text-blue-400">
+              <Link href="/setup" className="hover:text-primary">
                 Get Started
               </Link>
             </div>
@@ -45,13 +47,20 @@ export function Layout({ children }: LayoutProps) {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-300 hover:text-white focus:outline-none focus:text-white"
+                className="text-default-600 hover:text-foreground focus:outline-none focus:text-foreground"
               >
                 <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
                   {isMenuOpen ? (
-                    <path fillRule="evenodd" clipRule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 0 1 1.414 1.414l-4.828 4.829 4.828 4.828z" />
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 0 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
+                    />
                   ) : (
-                    <path fillRule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                    />
                   )}
                 </svg>
               </button>
@@ -60,31 +69,31 @@ export function Layout({ children }: LayoutProps) {
           {/* Mobile Menu */}
           {isMenuOpen && (
             <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800 border-t border-gray-700">
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-content1 border-t border-default-300">
                 <Link
                   href="/#features"
-                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  className="block px-3 py-2 text-base font-medium text-default-600 hover:text-foreground hover:bg-content2 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Features
                 </Link>
                 <Link
                   href="/#how-it-works"
-                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  className="block px-3 py-2 text-base font-medium text-default-600 hover:text-foreground hover:bg-content2 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   How it Works
                 </Link>
                 <Link
                   href="/#tributary"
-                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  className="block px-3 py-2 text-base font-medium text-default-600 hover:text-foreground hover:bg-content2 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Tributary
                 </Link>
                 <Link
                   href="/setup"
-                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                  className="block px-3 py-2 text-base font-medium text-default-600 hover:text-foreground hover:bg-content2 rounded-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get Started
@@ -99,8 +108,8 @@ export function Layout({ children }: LayoutProps) {
       <main className={isHome ? 'flex-1' : 'flex-1 pt-16'}>{children}</main>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-gray-700">
-        <div className="max-w-4xl mx-auto text-center text-gray-400">
+      <footer className="py-8 px-4 border-t border-default-300">
+        <div className="max-w-4xl mx-auto text-center text-default-600">
           <p>&copy; 2024 Contribute.so. Supporting open source with blockchain.</p>
         </div>
       </footer>

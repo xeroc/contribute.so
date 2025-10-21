@@ -56,17 +56,17 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold mb-2">Connect GitHub Repository</h2>
-        <p className="text-gray-400">Select a repository to enable donations</p>
+        <p className="text-default-600">Select a repository to enable donations</p>
       </div>
 
-      {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">{error}</div>}
+      {error && <div className="bg-danger/50 border border-danger text-danger-foreground p-4 rounded-lg">{error}</div>}
 
       <div className="space-y-4">
-        <label className="block text-sm font-medium text-gray-300">Choose Repository</label>
+        <label className="block text-sm font-medium text-default-700">Choose Repository</label>
         {loading ? (
           <div className="flex items-center justify-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span className="ml-2 text-red-600">Loading repositories...</span>
+            <span className="ml-2">Loading repositories...</span>
           </div>
         ) : repositories.length > 0 ? (
           <Select
@@ -86,9 +86,9 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
             ))}
           </Select>
         ) : (
-          <div className="text-center p-8 bg-gray-800 rounded-lg">
-            <p className="text-gray-400">No public repositories found</p>
-            <p className="text-sm text-gray-500 mt-2">Make sure your GitHub account has public repositories</p>
+          <div className="text-center p-8 bg-content1 rounded-lg">
+            <p className="text-default-600">No public repositories found</p>
+            <p className="text-sm text-default-600 mt-2">Make sure your GitHub account has public repositories</p>
           </div>
         )}
       </div>
@@ -96,7 +96,7 @@ export function GithubSetup({ walletPublicKey, onComplete }: GithubSetupProps) {
       <Button
         onClick={handleSaveSetup}
         disabled={!selectedRepo || loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600"
+        className="w-full bg-primary hover:bg-primary-600 disabled:bg-default-400"
         size="lg"
       >
         {loading ? 'Setting up...' : 'Complete GitHub Setup'}

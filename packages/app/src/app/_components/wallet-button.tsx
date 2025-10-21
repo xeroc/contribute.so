@@ -27,7 +27,7 @@ export function WalletButton({ onConnect, onConfirm }: WalletButtonProps = {}) {
   if (!mounted) {
     return (
       <div className="flex flex-col items-center gap-4">
-        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-secondary-500 hover:bg-secondary-600 text-foreground font-bold py-2 px-4 rounded">
           Connect Wallet
         </button>
       </div>
@@ -36,13 +36,13 @@ export function WalletButton({ onConnect, onConfirm }: WalletButtonProps = {}) {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-700 !text-white !font-bold !py-2 !px-4 !rounded" />
+      <WalletMultiButton className="!bg-secondary-500 hover:!bg-secondary-600 !text-foreground !font-bold !py-2 !px-4 !rounded" />
       {publicKey && (
         <div className="mt-6">
           {onConfirm && (
             <Button
               onClick={() => onConfirm(publicKey.toString())}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600"
+              className="w-full bg-primary hover:bg-primary-600 disabled:bg-default-400"
               size="lg"
             >
               Next Step

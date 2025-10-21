@@ -77,8 +77,8 @@ export default async function RepositorySetupPage({ params }: PageProps) {
                     </svg>
                   </div>
                   <div className="text-left">
-                    <h3 className="font-semibold">GitHub Repository</h3>
-                    <p className="text-gray-400 text-sm font-mono">{fullRepository}</p>
+                     <h3 className="font-semibold">GitHub Repository</h3>
+                     <p className="text-default-600 text-sm font-mono">{fullRepository}</p>
                   </div>
                 </div>
               )}
@@ -90,37 +90,37 @@ export default async function RepositorySetupPage({ params }: PageProps) {
                     </svg>
                   </div>
                   <div className="text-left">
-                    <h3 className="font-semibold">Twitter Account</h3>
-                    <p className="text-gray-400 text-sm font-mono">{fullRepository}</p>
+                     <h3 className="font-semibold">Twitter Account</h3>
+                     <p className="text-default-600 text-sm font-mono">{fullRepository}</p>
                   </div>
                 </div>
               )}
             </div>
 
             <div>
-              <div className="text-left">
-                <h3 className="font-semibold">Wallet Address</h3>
-                <p className="text-gray-400 text-sm font-mono">
-                  <PublicKeyComponent publicKey={setupData.walletPublicKey} />
-                </p>
-              </div>
+               <div className="text-left">
+                 <h3 className="font-semibold">Wallet Address</h3>
+                 <p className="text-default-600 text-sm font-mono">
+                   <PublicKeyComponent publicKey={setupData.walletPublicKey} />
+                 </p>
+               </div>
             </div>
 
             <div>
-              <div className="text-left">
-                <h3 className="font-semibold">Created</h3>
-                <p className="text-gray-400 text-sm font-mono">
-                  {setupData.createdAt ? new Date(setupData.createdAt).toLocaleDateString() : 'N/A'}
-                </p>
-              </div>
+               <div className="text-left">
+                 <h3 className="font-semibold">Created</h3>
+                 <p className="text-default-600 text-sm font-mono">
+                   {setupData.createdAt ? new Date(setupData.createdAt).toLocaleDateString() : 'N/A'}
+                 </p>
+               </div>
             </div>
 
             {setupData.userName && (
               <div>
-                <div className="text-left">
-                  <h3 className="font-semibold">User / Owner / Maintainer</h3>
-                  <p className="text-gray-400 text-sm font-mono">{setupData.userName}</p>
-                </div>
+                 <div className="text-left">
+                   <h3 className="font-semibold">User / Owner / Maintainer</h3>
+                   <p className="text-default-600 text-sm font-mono">{setupData.userName}</p>
+                 </div>
               </div>
             )}
           </div>
@@ -128,7 +128,7 @@ export default async function RepositorySetupPage({ params }: PageProps) {
             <DonationButton walletPublicKey={setupData.walletPublicKey} repository={setupData.repository} />
           </div>
 
-          <div className="text-center text-gray-400">
+           <div className="text-center text-default-600">
             <p>This repository is configured for automated monthly donations via Tributary protocol.</p>
             <p>Donations are processed transparently on the Solana blockchain.</p>
           </div>

@@ -17,8 +17,8 @@ const geist = Geist({
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} dark`}>
-      <body className="bg-dark-900 text-gray-300">
+    <html lang="en" className={`${geist.variable}`}>
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

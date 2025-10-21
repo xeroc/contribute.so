@@ -16,7 +16,7 @@ export function Auth() {
         <p>
           You are associated with @{session.user.provider}/{session.user.username}
         </p>
-        <button onClick={() => signOut()} className="rounded-full bg-red-600 px-4 py-2 text-white hover:bg-red-700">
+        <button onClick={() => signOut()} className="rounded-full bg-danger px-4 py-2 text-white hover:bg-danger-600">
           Sign Out
         </button>
       </div>
@@ -29,13 +29,13 @@ export function Auth() {
       <div className="flex gap-2">
         <button
           onClick={() => signIn('github')}
-          className="rounded-full bg-gray-800 px-4 py-2 text-white hover:bg-gray-900"
+          className="rounded-full bg-default-200 px-4 py-2 text-default-900 hover:bg-default-300"
         >
           Sign in with GitHub
         </button>
         <button
           onClick={() => signIn('twitter')}
-          className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          className="rounded-full bg-primary px-4 py-2 text-white hover:bg-primary-600"
         >
           Sign in with Twitter
         </button>

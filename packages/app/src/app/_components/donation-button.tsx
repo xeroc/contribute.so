@@ -36,11 +36,11 @@ export function DonationButton({ walletPublicKey, repository }: SubscriptionSect
         radius="sm"
         size="lg"
         executeImmediately={true}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
+        className="bg-secondary-500 hover:bg-secondary-600 text-foreground px-6 py-3 rounded-lg font-semibold"
         onSuccess={(tx) => console.log('Donation successful:', tx)}
         onError={(err) => console.error('Donation failed:', err)}
       />
-      <p className="text-sm text-gray-400 mt-2">Set up automated monthly donations in USDC via Solana blockchain</p>
+      <p className="text-sm text-default-600 mt-2">Set up automated monthly donations in USDC via Solana blockchain</p>
     </div>
   )
 }

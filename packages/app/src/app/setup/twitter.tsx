@@ -40,10 +40,10 @@ export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps)
     <div className="w-full max-w-2xl mx-auto space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold mb-2">Connect Twitter Account</h2>
-        <p className="text-gray-400">Connecting your Twitter account...</p>
+         <p className="text-default-600">Connecting your Twitter account...</p>
       </div>
 
-      {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">{error}</div>}
+       {error && <div className="bg-danger/50 border border-danger text-danger-foreground p-4 rounded-lg">{error}</div>}
 
       {loading ? (
         <div className="flex items-center justify-center p-8">
@@ -51,13 +51,13 @@ export function TwitterSetup({ walletPublicKey, onComplete }: TwitterSetupProps)
           <span className="ml-2">Setting up...</span>
         </div>
       ) : username ? (
-        <div className="text-center p-8 bg-green-900/20 border border-green-500 rounded-lg">
-          <p className="text-green-200">Connected as @{username}</p>
-        </div>
+         <div className="text-center p-8 bg-success/20 border border-success rounded-lg">
+           <p className="text-success-foreground">Connected as @{username}</p>
+         </div>
       ) : (
-        <div className="text-center p-8 bg-gray-800 rounded-lg">
-          <p className="text-gray-400">Loading Twitter account...</p>
-        </div>
+         <div className="text-center p-8 bg-content1 rounded-lg">
+           <p className="text-default-600">Loading Twitter account...</p>
+         </div>
       )}
     </div>
   )
