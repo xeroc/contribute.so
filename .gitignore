@@ -8,3 +8,5 @@ test-ledger
 
 **/lib/*js
 **/dist/*.js
+
+packages/scheduler/lib/

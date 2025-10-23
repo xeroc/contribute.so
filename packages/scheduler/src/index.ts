@@ -46,17 +46,17 @@ class PaymentScheduler {
 
   private async checkAndExecutePayments(): Promise<void> {
     console.log(
-      `[${new Date().toISOString()}] Checking for payments to execute...`
+      `[${new Date().toISOString()}] Checking for payments to execute...`,
     );
 
     try {
       // Get all payment policies managed by this gateway
       const paymentPolicies = await this.sdk.getPaymentPoliciesByGateway(
-        this.gatewayKeypair.publicKey
+        this.gatewayKeypair.publicKey,
       );
 
       console.log(
-        `Found ${paymentPolicies.length} payment policies for this gateway`
+        `Found ${paymentPolicies.length} payment policies for this gateway`,
       );
 
       const currentTime = Math.floor(Date.now() / 1000);
@@ -68,14 +68,14 @@ class PaymentScheduler {
           // Check if payment is due and policy is active
           if (this.shouldExecutePayment(policy, currentTime)) {
             console.log(
-              `Executing payment for policy: ${policyPda.toString()}`
+              `Executing payment for policy: ${policyPda.toString()}`,
             );
 
             await this.executePayment(policyPda);
             executedCount++;
 
             console.log(
-              `✓ Payment executed successfully for ${policyPda.toString()}`
+              `✓ Payment executed successfully for ${policyPda.toString()}`,
             );
 
             // Add small delay between payments to avoid overwhelming the RPC
@@ -84,14 +84,14 @@ class PaymentScheduler {
         } catch (error) {
           console.error(
             `✗ Error executing payment for ${policyPda.toString()}:`,
-            error
+            error,
           );
           errorCount++;
         }
       }
 
       console.log(
-        `Payment execution completed. Executed: ${executedCount}, Errors: ${errorCount}`
+        `Payment execution completed. Executed: ${executedCount}, Errors: ${errorCount}`,
       );
     } catch (error) {
       console.error("Error in payment checking process:", error);
@@ -115,7 +115,7 @@ class PaymentScheduler {
       const maxRenewals = policy.policyType.subscription.maxRenewals;
       if (maxRenewals !== null && policy.paymentCount >= maxRenewals) {
         console.log(
-          `Policy ${policy.policyId} has reached max renewals (${maxRenewals})`
+          `Policy ${policy.policyId} has reached max renewals (${maxRenewals})`,
         );
         return false;
       }
@@ -138,7 +138,7 @@ class PaymentScheduler {
         {
           commitment: "confirmed",
           skipPreflight: false,
-        }
+        },
       );
 
       console.log(`Payment executed with signature: ${signature}`);
@@ -171,7 +171,7 @@ class PaymentScheduler {
       {
         scheduled: true,
         timezone: "UTC",
-      }
+      },
     );
 
     console.log("Payment scheduler started successfully");

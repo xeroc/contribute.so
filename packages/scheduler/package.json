@@ -7,7 +7,7 @@
     "dev": "pnpm start",
     "lint": "eslint src",
     "clean": "rm -rf ./lib",
-    "build": "pnpm run clean && npx tsc"
+    "build": "pnpm run clean && pnpm exec tsc"
   },
   "dependencies": {
     "@contribute-so/lib": "workspace:*",
