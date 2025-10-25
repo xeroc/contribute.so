@@ -64,9 +64,11 @@ class PaymentScheduler {
 
     try {
       // Get all payment policies managed by this gateway
-      const paymentPolicies = await this.sdk.getPaymentPoliciesByGateway(
+      const { address: gatewayPda } = this.sdk.getGatewayPda(
         this.gatewayKeypair.publicKey,
       );
+      const paymentPolicies =
+        await this.sdk.getPaymentPoliciesByGateway(gatewayPda);
 
       console.log(
         `Found ${paymentPolicies.length} payment policies for this gateway`,
@@ -96,8 +98,7 @@ class PaymentScheduler {
           }
         } catch (error) {
           console.error(
-            `🚩 Error executing payment for ${policyPda.toString()}:`,
-            error,
+            `🚩 Error executing payment for ${policyPda.toString()}`,
           );
           errorCount++;
         }
@@ -107,7 +108,7 @@ class PaymentScheduler {
         `Payment execution completed. Executed: ${executedCount}, Errors: ${errorCount}`,
       );
     } catch (error) {
-      console.error("Error in payment checking process:", error);
+      console.error("Error in payment checking process");
     }
   }
 
@@ -118,14 +119,15 @@ class PaymentScheduler {
     }
 
     // Check if payment is due
-    const nextPaymentDue = policy.nextPaymentDue.toNumber();
-    if (nextPaymentDue > currentTime) {
-      return false;
-    }
-
-    // For subscription policies, check if we haven't exceeded max renewals
+    // For subscription policies, check if we can execute now haven't exceeded max renewals
     if (policy.policyType.subscription) {
-      const maxRenewals = policy.policyType.subscription.maxRenewals;
+      const subscriptionDetails = policy.policyType.subscription;
+      const nextPaymentDue = subscriptionDetails.nextPaymentDue.toNumber();
+      if (nextPaymentDue > currentTime) {
+        return false;
+      }
+
+      const maxRenewals = subscriptionDetails.maxRenewals;
       if (maxRenewals !== null && policy.paymentCount >= maxRenewals) {
         console.log(
           `Policy ${policy.policyId} has reached max renewals (${maxRenewals})`,
@@ -156,7 +158,7 @@ class PaymentScheduler {
 
       console.log(`Payment executed with signature: ${signature}`);
     } catch (error) {
-      console.error(`Failed to execute payment:`, error);
+      console.error(`Failed to execute payment`);
       throw error;
     }
   }
