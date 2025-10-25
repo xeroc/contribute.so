@@ -35,7 +35,7 @@ job "contribute-scheduler" {
     task "app" {
       driver = "docker"
       config {
-        image = "ghcr.io/contribute-so/scheduler:0.1.1"
+        image = "ghcr.io/contribute-so/scheduler:0.1.2"
         auth {
           username = "${var.registry_auth.username}"
           password = "${var.registry_auth.password}"
