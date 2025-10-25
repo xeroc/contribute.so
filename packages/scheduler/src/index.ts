@@ -5,13 +5,15 @@ import * as anchor from "@coral-xyz/anchor";
 import * as cron from "node-cron";
 import * as fs from "fs";
 import { RecurringPaymentsSDK } from "@tributary-so/sdk";
+import { exit } from "process";
 // import { db } from "@contribute-so/lib/db";
 // import { userSetups } from "@contribute-so/lib/db/schema";
 // import { env } from "@contribute-so/lib/env";
 
 interface SchedulerConfig {
   connectionUrl: string;
-  gatewayKeypairPath: string;
+  gatewayKeypairPath?: string;
+  privateKey?: string;
   cronSchedule?: string; // Default: every hour
 }
 
@@ -24,7 +26,14 @@ class PaymentScheduler {
     this.config = config;
 
     // Load gateway keypair
-    this.gatewayKeypair = this.loadKeypairFromFile(config.gatewayKeypairPath);
+    if (config.gatewayKeypairPath) {
+      this.gatewayKeypair = this.loadKeypairFromFile(config.gatewayKeypairPath);
+    } else if (config.privateKey) {
+      this.gatewayKeypair = this.loadKeypair(config.privateKey);
+    } else {
+      console.log("Error: need private key!");
+      exit(1);
+    }
 
     // Initialize SDK
     const connection = new Connection(config.connectionUrl, "confirmed");
@@ -32,12 +41,16 @@ class PaymentScheduler {
     this.sdk = new RecurringPaymentsSDK(connection, wallet);
   }
 
+  private loadKeypair(data: string) {
+    const secretKeyArray = JSON.parse(data);
+    const secretKeyBuffer = new Uint8Array(secretKeyArray);
+    return Keypair.fromSecretKey(secretKeyBuffer);
+  }
+
   private loadKeypairFromFile(filePath: string): Keypair {
     try {
       const jsonContent = fs.readFileSync(filePath, "ascii");
-      const secretKeyArray = JSON.parse(jsonContent);
-      const secretKeyBuffer = new Uint8Array(secretKeyArray);
-      return Keypair.fromSecretKey(secretKeyBuffer);
+      return this.loadKeypair(jsonContent);
     } catch (error) {
       console.error("Error reading keypair:", error);
       throw error;
@@ -153,7 +166,7 @@ class PaymentScheduler {
   }
 
   public start(): void {
-    const schedule = this.config.cronSchedule || "0 * * * *"; // Every hour at minute 0
+    const schedule = this.config.cronSchedule || "*/5 * * * *"; // Every 5mins
 
     console.log(`Starting payment scheduler with schedule: ${schedule}`);
     console.log(`Gateway: ${this.gatewayKeypair.publicKey.toString()}`);
@@ -188,14 +201,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.error("Environment variable SOLANA_API required");
     process.exit(1);
   }
-  if (!process.env.ANCHOR_WALLET) {
-    console.error("Environment variable ANCHOR_WALLET required");
+  if (!process.env.ANCHOR_WALLET && !process.env.PRIVATE_KEY) {
+    console.error("Environment variable ANCHOR_WALLET or PRIVATE_KEY required");
     process.exit(1);
   }
 
   const config: SchedulerConfig = {
     connectionUrl: process.env.SOLANA_API,
     gatewayKeypairPath: process.env.ANCHOR_WALLET,
+    privateKey: process.env.PRIVATE_KEY,
     cronSchedule: process.env.CRON_SCHEDULE || "0 * * * *",
   };
 
