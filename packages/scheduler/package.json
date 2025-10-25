@@ -15,7 +15,7 @@
     "@rollup/plugin-inject": "^5.0.5",
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.4",
-    "@tributary-so/sdk": "^0.4.0",
+    "@tributary-so/sdk": "^0.5.0",
     "bn.js": "^4.12.1",
     "commander": "^14.0.1",
     "node-cron": "^3.0.3"
