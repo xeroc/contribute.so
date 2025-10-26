@@ -21,6 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <Providers>{children}</Providers>
       </body>
+      <script defer data-domain="contribute.so" src="https://p.chainsquad.com/js/script.js"></script>
     </html>
   )
 }
