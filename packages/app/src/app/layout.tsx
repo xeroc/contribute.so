@@ -3,6 +3,7 @@ import '~/styles/globals.css'
 import { type Metadata } from 'next'
 import { Geist } from 'next/font/google'
 import { Providers } from './_components/providers'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'contribute.so',
@@ -20,8 +21,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${geist.variable}`}>
       <body>
         <Providers>{children}</Providers>
+        <Script defer data-domain="contribute.so" src="https://p.chainsquad.com/js/script.js" />
       </body>
-      <script defer data-domain="contribute.so" src="https://p.chainsquad.com/js/script.js"></script>
     </html>
   )
 }

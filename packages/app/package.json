@@ -39,7 +39,7 @@
     "@t3-oss/env-nextjs": "^0.12.0",
     "@tanstack/react-query": "^5.69.0",
     "@tributary-so/sdk": "^0.5.0",
-    "@tributary-so/sdk-react": "^0.2.0",
+    "@tributary-so/sdk-react": "^0.3.1",
     "@trpc/client": "^11.0.0",
     "@trpc/react-query": "^11.0.0",
     "@trpc/server": "^11.0.0",

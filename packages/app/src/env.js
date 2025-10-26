@@ -24,6 +24,8 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY: z.string(),
+    NEXT_PUBLIC_SOLANA_RPC_URL: z.string().url(),
+    NEXT_PUBLIC_DEFAULT_DONATION_TOKEN_MINT: z.string(),
   },
 
   /**
@@ -40,6 +42,8 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLIC_KEY,
+    NEXT_PUBLIC_SOLANA_RPC_URL: process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
+    NEXT_PUBLIC_DEFAULT_DONATION_TOKEN_MINT: process.env.NEXT_PUBLIC_DEFAULT_DONATION_TOKEN_MINT,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

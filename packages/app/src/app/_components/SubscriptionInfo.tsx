@@ -10,7 +10,7 @@ export interface SetupData {
   provider: string
   repository: string
   walletPublicKey: string
-  createdAt: Date | null
+  createdAt: string | null
   userName: string | null
   fullRepository?: string
 }
@@ -74,7 +74,7 @@ export default function SubscriptionInfo({ setupData }: SubscriptionInfoProps) {
           {setupData.createdAt && (
             <div className="text-left">
               <h3 className="font-semibold">Created</h3>
-              <p className="text-default-600 text-sm font-mono">{new Date(setupData.createdAt).toLocaleDateString()}</p>
+              <p className="text-default-600 text-sm font-mono">{setupData.createdAt}</p>
             </div>
           )}
 

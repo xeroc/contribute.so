@@ -51,7 +51,11 @@ export default async function RepositorySetupPage({ params }: PageProps) {
     notFound()
   }
 
-  const setupData: SetupData = { ...setup[0], fullRepository }
+  const setupData: SetupData = {
+    ...setup[0],
+    fullRepository,
+    createdAt: setup[0].createdAt ? new Date(setup[0].createdAt).toLocaleDateString('en-US') : null,
+  }
 
   return (
     <Layout>
