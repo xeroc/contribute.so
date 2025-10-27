@@ -75,6 +75,7 @@ The producer creates the following Kafka topics:
 - **ChainWatcher**: Handles real-time WebSocket monitoring and transaction processing
 - **ChainCatchup**: Processes missed transactions during downtime
 - **ChainscopeParser**: Parses Anchor events from transaction logs
+- **RedisService**: Shared Redis service for deduplication and checkpointing
 
 ### Data Flow
 
@@ -117,6 +118,34 @@ pnpm lint
 ### IDL File
 
 The IDL file should be a standard Anchor IDL JSON file containing your program's interface definition, including events.
+
+## Redis Service
+
+The `RedisService` provides a shared Redis connection that can be used by multiple components simultaneously:
+
+### Redis Service Features
+
+- **Connection Management**: Single Redis connection shared across components
+- **Signature Deduplication**: Prevents processing the same transaction multiple times
+- **Checkpointing**: Saves progress for both catch-up and real-time processing
+- **Automatic Expiration**: Redis keys expire after 30 days to prevent unbounded growth
+
+### Redus Service Usage
+
+```typescript
+import { RedisService } from "./redis.js";
+
+// Create shared instance
+const redisService = new RedisService("redis://localhost:6379/0");
+await redisService.connect();
+
+// Use in multiple components
+const watcher = new ChainWatcher(program, kafkaServers, topic, redisService);
+const catchup = new ChainCatchup(program, topic, redisService);
+
+// Clean up when done
+await redisService.disconnect();
+```
 
 ## Error Handling
 

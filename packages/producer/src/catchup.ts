@@ -1,62 +1,36 @@
-import { createClient, RedisClientType } from "redis";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { getConfig } from "./config.js";
 import { type Program } from "@tributary-so/sdk";
+import { RedisService } from "./redis.js";
 
 export class ChainCatchup {
   private checkpointKey: string;
   private signaturePrefix: string;
-  private signatureExpirySeconds: number = 2592000; // Default: 30 days (1 month)
   private connection: Connection;
-  private redisClient: RedisClientType | null = null;
+  private redisService: RedisService;
   private programId: PublicKey;
   private program: Program;
 
-  constructor(program: Program, kafkaTopic?: string, redisUrl?: string) {
+  constructor(program: Program, kafkaTopic?: string, redisService?: RedisService) {
     this.program = program;
     this.connection = program.provider.connection;
     this.programId = program.programId;
-
-    if (redisUrl) {
-      this.redisClient = createClient({ url: redisUrl });
-      this.redisClient.connect();
-    }
+    this.redisService = redisService || new RedisService();
 
     this.checkpointKey = `${kafkaTopic || getConfig().KAFKA_TOPIC_PREFIX}-chainwatcher-checkpoint`;
     this.signaturePrefix = `${kafkaTopic || getConfig().KAFKA_TOPIC_PREFIX}-chainwatcher-sig:`;
   }
 
   async initialize(): Promise<void> {
-    // Initialize Redis connection if needed
-    if (this.redisClient) {
-      await this.redisClient.connect();
-    }
+    // Redis connection is managed by RedisService
   }
 
   storeSignature(signature: string): boolean {
-    if (!this.redisClient) {
-      return false;
-    }
-
-    const key = `${this.signaturePrefix}${signature}`;
-    const value = JSON.stringify({
-      signature,
-      processed_at: Date.now(),
-    });
-
-    // Note: Redis v4 uses promises
-    this.redisClient.setEx(key, this.signatureExpirySeconds, value);
-    return true;
+    return this.redisService.storeSignature(signature, this.signaturePrefix);
   }
 
   async isSignatureProcessed(signature: string): Promise<boolean> {
-    if (!this.redisClient) {
-      return false;
-    }
-
-    const key = `${this.signaturePrefix}${signature}`;
-    const exists = await this.redisClient.exists(key);
-    return exists === 1;
+    return this.redisService.isSignatureProcessed(signature, this.signaturePrefix);
   }
 
   async processSignature(signature: string): Promise<boolean> {
@@ -105,28 +79,15 @@ export class ChainCatchup {
   }
 
   async getLastCheckpoint(): Promise<any> {
-    if (!this.redisClient) {
-      return {};
-    }
-    const checkpoint = await this.redisClient.get(this.checkpointKey);
-    return checkpoint ? JSON.parse(checkpoint) : {};
+    const checkpoint = await this.redisService.getLastCheckpoint(this.checkpointKey);
+    return checkpoint || {};
   }
 
   saveCheckpoint(signature: string, additionalInfo: any = {}): void {
-    if (!this.redisClient) {
-      throw new Error("No redis_client specified!");
-    }
-    const checkpointData = {
-      last_signature: signature,
-      timestamp: Date.now(),
-      ...additionalInfo,
-    };
-    this.redisClient.set(this.checkpointKey, JSON.stringify(checkpointData));
+    this.redisService.saveCheckpoint(this.checkpointKey, signature, additionalInfo);
   }
 
   async close(): Promise<void> {
-    if (this.redisClient) {
-      await this.redisClient.disconnect();
-    }
+    // Redis connection is managed by RedisService
   }
 }

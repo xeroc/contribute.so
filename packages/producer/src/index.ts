@@ -2,6 +2,7 @@ import { RecurringPaymentsSDK } from "@tributary-so/sdk";
 import { ChainWatcher } from "./watcher.js";
 import { ChainCatchup } from "./catchup.js";
 import { getConfig } from "./config.js";
+import { RedisService } from "./redis.js";
 import { Connection, Keypair } from "@solana/web3.js";
 import { Wallet } from "@coral-xyz/anchor";
 
@@ -15,19 +16,23 @@ async function main() {
 
   console.log("Starting combined catchup and real-time monitoring");
 
+  // Create a shared Redis service instance
+  const redisService = new RedisService(config.REDIS_URL);
+  await redisService.connect();
+
   // For now, we'll focus on a single program. You can extend this to handle multiple programs like the Python version
   // You'll need to provide the correct path to your IDL file
   const watcher = new ChainWatcher(
     sdk.program,
     config.KAFKA_BOOTSTRAP_SERVERS,
     config.KAFKA_TOPIC_PREFIX,
-    config.REDIS_URL,
+    redisService,
   );
 
   const catchup = new ChainCatchup(
     sdk.program,
     config.KAFKA_TOPIC_PREFIX,
-    config.REDIS_URL,
+    redisService,
   );
 
   // Initialize components
@@ -71,6 +76,7 @@ async function main() {
   } finally {
     await watcher.close();
     await catchup.close();
+    await redisService.disconnect();
   }
 }
 
