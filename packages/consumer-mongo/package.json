@@ -1,0 +1,38 @@
+{
+  "name": "@contribute-so/consumer-mongo",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx src/consumer.ts",
+    "dev": "pnpm start",
+    "lint": "eslint src",
+    "clean": "rm -rf ./lib",
+    "build": "pnpm run clean && pnpm exec tsc"
+  },
+  "dependencies": {
+    "@tributary-so/sdk": "^0.5.1",
+    "@solana/web3.js": "^1.98.4",
+    "@coral-xyz/anchor": "^0.31.0",
+    "dotenv": "^16.4.5",
+    "json-query": "^2.2.2",
+    "kafkajs": "^2.2.4",
+    "mongodb": "^6.20.0"
+  },
+  "devDependencies": {
+    "@types/json-query": "^2.2.6",
+    "@types/node": "^22.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "lib/**/*",
+    "src/**/*.json"
+  ],
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "packageManager": "pnpm@9.6.0"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "consumer-redis",
+  "root": "packages/consumer-redis",
+  "sourceRoot": "packages/consumer-redis/src",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node packages/consumer-redis/src/consumer.ts"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node dist/packages/consumer-redis/src/consumer.js"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/consumer-redis",
+        "main": "packages/consumer-redis/src/consumer.ts",
+        "tsConfig": "packages/consumer-redis/tsconfig.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "packages/consumer-redis/jest.config.js"
+      }
+    }
+  }
+}

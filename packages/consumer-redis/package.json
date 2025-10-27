@@ -1,0 +1,35 @@
+{
+  "name": "@contribute-so/consumer-redis",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx src/consumer.ts",
+    "dev": "pnpm start",
+    "lint": "eslint src",
+    "clean": "rm -rf ./lib",
+    "build": "pnpm run clean && pnpm exec tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "json-query": "^2.2.2",
+    "kafkajs": "^2.2.4",
+    "redis": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/json-query": "^2.2.6",
+    "@types/node": "^22.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "lib/**/*",
+    "src/**/*.json"
+  ],
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "packageManager": "pnpm@9.6.0"
+}

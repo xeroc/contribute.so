@@ -1,0 +1,41 @@
+{
+  "name": "consumer-mongo",
+  "root": "packages/consumer-mongo",
+  "sourceRoot": "packages/consumer-mongo/src",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node packages/consumer-mongo/src/consumer.ts"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node dist/packages/consumer-mongo/src/consumer.js"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/consumer-mongo",
+        "main": "packages/consumer-mongo/src/consumer.ts",
+        "tsConfig": "packages/consumer-mongo/tsconfig.json",
+        "assets": [
+          {
+            "glob": "data/*.json",
+            "input": ".",
+            "output": "../.."
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "packages/consumer-mongo/jest.config.js"
+      }
+    }
+  }
+}
