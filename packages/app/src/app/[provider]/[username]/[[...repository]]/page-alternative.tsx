@@ -29,10 +29,10 @@ export function HeroUICheckout() {
     setIsProcessing(true)
     await new Promise((resolve) => setTimeout(resolve, 2000))
     setIsProcessing(false)
-    alert(`Subscription initiated for ${username} with $${selectedAmount || customAmount}`)
+    alert(`Subscription initiated for ${username} with $${selectedAmount ?? customAmount}`)
   }
 
-  const finalAmount = selectedAmount || Number.parseFloat(customAmount) || 0
+  const finalAmount = selectedAmount ?? Number.parseFloat(customAmount) ?? 0
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
