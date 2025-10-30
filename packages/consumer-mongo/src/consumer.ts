@@ -9,7 +9,7 @@ dotenv.config();
 
 // change groupId each time you run to be able to read all messages
 const groupId = process.env.KAFKA_CONSUMER_GROUP_NAME || "consumer-mongo";
-const dbName = "db";
+const dbName = process.env.MONGO_DATABASE || "db";
 const solana_api = process.env.SOLANA_API as string;
 if (!solana_api) {
   throw new Error("SOLANA_API required");
