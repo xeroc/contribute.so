@@ -98,7 +98,7 @@ class PaymentScheduler {
           }
         } catch (error) {
           console.error(
-            `🚩 Error executing payment for ${policyPda.toString()}`,
+            `🚩 Error executing payment for ${policyPda.toString()}: ${(error as Error).message}`,
           );
           errorCount++;
         }
