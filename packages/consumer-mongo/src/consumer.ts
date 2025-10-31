@@ -43,6 +43,8 @@ function initializeConsumer() {
   return consumer;
 }
 
+let mongoClient: MongoClient | null = null;
+
 export function initializeMongoClient() {
   const mongoUrl = process.env.MONGODB_URI;
   if (!mongoUrl) {
@@ -51,6 +53,21 @@ export function initializeMongoClient() {
 
   const client = new MongoClient(mongoUrl);
   return client;
+}
+
+export async function connectMongoClient() {
+  if (!mongoClient) {
+    mongoClient = initializeMongoClient();
+    await mongoClient.connect();
+  }
+  return mongoClient;
+}
+
+export async function closeMongoClient() {
+  if (mongoClient) {
+    await mongoClient.close();
+    mongoClient = null;
+  }
 }
 
 function getTopics() {
@@ -63,8 +80,7 @@ function getTopics() {
 
 async function storeTx(data: any) {
   console.info(`Storing transaction with signature: ${data.signature}`);
-  const client = initializeMongoClient();
-  await client.connect();
+  const client = await connectMongoClient();
   const db = client.db(dbName);
   const collection = db.collection("transactions");
 
@@ -79,14 +95,11 @@ async function storeTx(data: any) {
       return;
     }
     throw e; // Re-throw other errors
-  } finally {
-    await client.close();
   }
 }
 
 async function storeEvent(data: any) {
-  const client = initializeMongoClient();
-  await client.connect();
+  const client = await connectMongoClient();
   const db = client.db(dbName);
   const collection = db.collection("events");
   console.info(
@@ -106,8 +119,6 @@ async function storeEvent(data: any) {
       return;
     }
     throw e; // Re-throw other errors
-  } finally {
-    await client.close();
   }
 }
 
@@ -117,6 +128,7 @@ async function runConsumer() {
   const topics = getTopics();
 
   try {
+    await connectMongoClient();
     await consumer.connect();
 
     await consumer.subscribe({ topics: topics, fromBeginning: true });
@@ -138,12 +150,15 @@ async function runConsumer() {
     });
   } catch (error) {
     console.error(error);
+  } finally {
+    await closeMongoClient();
   }
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 }
 
-runConsumer().catch((error) => {
+runConsumer().catch(async (error) => {
   console.error(error);
+  await closeMongoClient();
   process.exit(1);
 });
