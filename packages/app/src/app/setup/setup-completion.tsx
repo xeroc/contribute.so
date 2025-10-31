@@ -51,12 +51,6 @@ export function SetupCompletion({ provider, repository, walletPublicKey }: Setup
 
         <SubscriptionInfo setupData={setupData} />
 
-        {provider === 'github' && (
-          <div className="bg-primary/20 border border-primary rounded-lg p-6">
-            <DonationButton walletPublicKey={walletPublicKey} repository={repository} />
-          </div>
-        )}
-
         <div className="bg-content1 rounded-lg p-6 space-y-4">
           <h3 className="text-lg font-semibold">Share Your Donation Link</h3>
           <p className="text-default-600">Use this badge to display your donation link:</p>

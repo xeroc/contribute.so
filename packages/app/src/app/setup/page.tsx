@@ -93,13 +93,13 @@ export default function Setup() {
   }
 
   const back = async (step: SetupStep) => {
-    console.log(step)
     if (step == 'wallet') {
       setWalletConnected(false)
       setWalletConfirmed(false)
     }
     if (step == 'provider' || step == 'wallet') {
-      console.log('signout')
+      setWalletConnected(false)
+      setWalletConfirmed(false)
       await signOut()
       setCurrentStep(step)
     }

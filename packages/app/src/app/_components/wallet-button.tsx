@@ -40,11 +40,7 @@ export function WalletButton({ onConnect, onConfirm }: WalletButtonProps = {}) {
       {publicKey && (
         <div className="mt-6">
           {onConfirm && (
-            <Button
-              onClick={() => onConfirm(publicKey.toString())}
-              className="w-full bg-primary hover:bg-primary-600 disabled:bg-default-400"
-              size="lg"
-            >
+            <Button onClick={() => onConfirm(publicKey.toString())} size="lg">
               Next Step
             </Button>
           )}
