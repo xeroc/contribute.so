@@ -22,6 +22,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <Providers>{children}</Providers>
         <Script defer data-domain="contribute.so" src="https://p.chainsquad.com/js/script.js" />
+        <Script src="https://cdn.jsdelivr.net/npm/eruda" />
+        <Script
+          id="eruda"
+          dangerouslySetInnerHTML={{
+            __html: `eruda.init();`,
+          }}
+        />
       </body>
     </html>
   )
