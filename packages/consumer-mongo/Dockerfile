@@ -15,6 +15,11 @@ COPY --from=deps /app /app
 COPY packages/lib /app/packages/lib
 COPY packages/consumer-mongo /app/packages/consumer-mongo
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app/packages/consumer-mongo
 RUN pnpm run build
 CMD [ "pnpm", "start" ]

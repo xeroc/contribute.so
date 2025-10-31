@@ -43,22 +43,23 @@ services:
       REDIS_URL: redis://redis:6379/0
       KAFKA_BOOTSTRAP_SERVERS: kafka:9094
       KAFKA_TOPIC_PREFIX: tributary
-      SOLANA_API:
+    env_file:
+      - .env.producer
     depends_on:
       - redis
       - kafka
 
   consumer-mongo:
-    image: ghcr.io/contribute-so/consumer-mongo:0.0.2
+    image: ghcr.io/contribute-so/consumer-mongo:0.0.3
     container_name: consumer-mongo
     restart: "always"
     environment:
       REDIS_URL: redis://redis:6379/0
       KAFKA_BOOTSTRAP_SERVERS: kafka:9094
       KAFKA_TOPIC_PREFIX: tributary
-      SOLANA_API:
-      MONGODB_URI:
       MONGO_DATABASE: prod
+    env_file:
+      - .env.mongo
     depends_on:
       - redis
       - kafka
