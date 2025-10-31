@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Snippet, Button } from '@heroui/react'
-import { DonationButton } from '~/app/_components/donation-button'
 import Link from 'next/link'
 import confetti from 'canvas-confetti'
 import SubscriptionInfo, { type SetupData } from '../_components/SubscriptionInfo'
