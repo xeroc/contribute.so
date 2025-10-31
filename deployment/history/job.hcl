@@ -13,7 +13,7 @@ variable "consumers" {
     {
       name          = "mongo"
       image_name    = "consumer-mongo"
-      image_version = "0.0.2"
+      image_version = "0.0.6"
       count         = 1
     }
   ]

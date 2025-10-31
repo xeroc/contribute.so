@@ -50,7 +50,7 @@ services:
       - kafka
 
   consumer-mongo:
-    image: ghcr.io/contribute-so/consumer-mongo:0.0.3
+    image: ghcr.io/contribute-so/consumer-mongo:0.0.6
     container_name: consumer-mongo
     restart: "always"
     environment:

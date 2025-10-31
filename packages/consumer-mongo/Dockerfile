@@ -1,4 +1,4 @@
-FROM node:20-slim AS base
+FROM node:20 AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -14,11 +14,6 @@ FROM base AS build
 COPY --from=deps /app /app
 COPY packages/lib /app/packages/lib
 COPY packages/consumer-mongo /app/packages/consumer-mongo
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app/packages/consumer-mongo
 RUN pnpm run build
