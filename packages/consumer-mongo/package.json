@@ -16,7 +16,8 @@
     "dotenv": "^16.4.5",
     "json-query": "^2.2.2",
     "kafkajs": "^2.2.4",
-    "mongodb": "^6.20.0"
+    "mongodb": "^6.20.0",
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
     "@types/json-query": "^2.2.6",
